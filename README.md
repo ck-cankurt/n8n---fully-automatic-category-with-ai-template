@@ -4,6 +4,9 @@
 
 ---
 
+<img width="1468" height="756" alt="image" src="https://github.com/user-attachments/assets/a73528f6-465e-439f-bd7b-b982ad2b95cf" />
+
+
 ## ✨ Features
 
 - **Self-Discovery:** Scans your Outlook folders automatically – no manual mapping required.
