@@ -243,31 +243,6 @@
     },
     {
       "parameters": {
-        "model": {
-          "__rl": true,
-          "value": "gpt-4o",
-          "mode": "list",
-          "cachedResultName": "gpt-4o"
-        },
-        "options": {}
-      },
-      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-      "typeVersion": 1.2,
-      "position": [
-        848,
-        560
-      ],
-      "id": "987d6642-6b3a-4c86-a29c-a143c1c8785a",
-      "name": "OpenAI Chat Model",
-      "credentials": {
-        "openAiApi": {
-          "id": "BSovX8QTySNqaLRT",
-          "name": "OpenAi account"
-        }
-      }
-    },
-    {
-      "parameters": {
         "jsCode": "// Gelen değer array olabilir\nconst raw = $json.appended_displayName;\n\n// Array olup olmadığını kontrol et, stringe çevir\nlet output;\nif (Array.isArray(raw)) {\n  output = raw.join(\", \");\n} else {\n  output = String(raw);\n}\n\nreturn {\n  cleanedString: output\n};\n"
       },
       "type": "n8n-nodes-base.code",
@@ -292,14 +267,7 @@
             "displayName",
             "childFolderCount"
           ],
-          "includeChildFolders": true,
-          "folderId": {
-            "__rl": true,
-            "value": "AQMkAGExN2Q4YTQ0AC01NDI4LTRhNmYtODYwZS05YzU0YzE5MzAyZjQALgAAA9jkZp65v9BIjLPAC68z-1MBAKhQNfuxpX5CpnvHa8QQO84AAAIBDAAAAA==",
-            "mode": "list",
-            "cachedResultName": "Gelen Kutusu",
-            "cachedResultUrl": "https://outlook.office365.com/mail/AQMkAGExN2Q4YTQ0AC01NDI4LTRhNmYtODYwZS05YzU0YzE5MzAyZjQALgAAA9jkZp65v9BIjLPAC68z%2F1MBAKhQNfuxpX5CpnvHa8QQO84AAAIBDAAAAA%3D%3D"
-          }
+          "includeChildFolders": true
         }
       },
       "type": "n8n-nodes-base.microsoftOutlook",
@@ -378,7 +346,8 @@
         "options": {
           "fields": [
             "displayName",
-            "childFolderCount"
+            "childFolderCount",
+            "parentFolderId"
           ],
           "includeChildFolders": true
         }
@@ -555,6 +524,26 @@
           "name": "Microsoft Outlook account"
         }
       }
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        784,
+        528
+      ],
+      "id": "6360c01a-f285-4653-97df-1a0e23c5e806",
+      "name": "OpenRouter Chat Model",
+      "credentials": {
+        "openRouterApi": {
+          "id": "ZLtYK0MmEJgJn2mU",
+          "name": "OpenRouter account"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -667,17 +656,6 @@
         ]
       ]
     },
-    "OpenAI Chat Model": {
-      "ai_languageModel": [
-        [
-          {
-            "node": "AI Agent1",
-            "type": "ai_languageModel",
-            "index": 0
-          }
-        ]
-      ]
-    },
     "Code": {
       "main": [
         [
@@ -741,6 +719,13 @@
             "type": "main",
             "index": 0
           }
+        ],
+        [
+          {
+            "node": "Loop Over Items1",
+            "type": "main",
+            "index": 0
+          }
         ]
       ]
     },
@@ -787,11 +772,22 @@
           }
         ]
       ]
+    },
+    "OpenRouter Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {},
-  "versionId": "7e82dc7e-7b68-4d74-b5b0-b96957b66166",
+  "versionId": "1c63f5b4-480a-4adc-9e0f-52ede5aa95ed",
   "meta": {
     "templateId": "2454",
     "templateCredsSetupCompleted": true,
