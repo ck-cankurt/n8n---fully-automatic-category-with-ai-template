@@ -228,7 +228,8 @@
         848,
         288
       ],
-      "typeVersion": 1.6
+      "typeVersion": 1.6,
+      "onError": "continueErrorOutput"
     },
     {
       "parameters": {},
@@ -544,6 +545,45 @@
           "name": "OpenRouter account"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Categorise the following email\n<email>\n{{ $('varEmal1').first().json.toJsonString() }}\n</email>\n\nEnsure your final output is valid JSON with no additional text or token in the following format:\n\n{\n  \"subject\": \"SUBJECT_LINE\",1\n  \"category\": \"CATEGORY\",\n  \"subCategory\": \"SUBCATEGORY\", //use sparingly\n  \"analysis\": \"ANALYSIS_REASONING\"\n}\n\nRemember you can only use ONE of the following categories {{ $json.category }}. No other categories can be used. Use the subcategory for additional context, for example, if a SaaS email requires action, or if a business email requires action. Do not create any additional subcategories, you can only use ONE of the following {{ $json.category }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "=You are an advanced AI email categorization system for a freelance developer. Your mission is to intelligently analyze and categorize emails with maximum accuracy and context awareness.\n\n**INTELLIGENT CATEGORIZATION ENGINE:**\n\n**Phase 1 - Dynamic Category Processing:**\n- Parse and interpret all available categories from {{ $json.category }}\n- Automatically detect category hierarchies and relationships\n- Build intelligent mapping between email characteristics and categories\n\n**Phase 2 - Multi-Layer Email Analysis:**\n- **Sender Intelligence**: Domain reputation, email patterns, historical behavior\n- **Subject Line Analysis**: Keywords, urgency indicators, spam patterns, language detection\n- **Content Deep Scan**: Body text analysis, link analysis, attachment detection, HTML structure\n- **Contextual Understanding**: Business relevance, timing, frequency patterns\n- **Spam/Threat Detection**: Advanced phishing detection, scam patterns, malicious content identification\n\n**Phase 3 - Advanced Decision Logic:**\n\n**PRIORITY CATEGORIZATION RULES:**\n1. **SECURITY THREATS** → Immediate junk classification for phishing, scams, suspicious links\n2. **ACTION REQUIRED** → Critical business emails needing immediate response get \"Action\" category\n3. **BUSINESS CONTEXT** → Legitimate business communications vs promotional content distinction\n4. **SENDER REPUTATION** → Known vendors/partners vs unknown senders treatment\n5. **CONTENT ANALYSIS** → Marketing language detection vs technical communication\n6. **URGENCY DETECTION** → Time-sensitive content identification\n\n**SPECIALIZED CATEGORIZATION INTELLIGENCE:**\n- **Domain/Hosting/Server**: Automatically detect hosting providers, domain registrars, server notifications\n- **SaaS Action Items**: Distinguish between promotional SaaS emails vs critical system notifications\n- **E-commerce Detection**: Advanced marketplace email recognition (Amazon, local platforms)\n- **Financial Intelligence**: Invoice detection, payment confirmations, banking communications\n- **Support Ticket Analysis**: Technical support vs general customer service distinction\n- **Corporate Communication**: Contract emails, official business correspondence detection\n\n**ANTI-SPAM INTELLIGENCE:**\n- **Marketing Pattern Detection**: Newsletter signatures, unsubscribe links, promotional language\n- **Emoji Spam Detection**: Excessive emoji usage indicating promotional content\n- **Subject Line Red Flags**: Discount offers, limited time offers, \"act now\" language\n- **Sender Spoofing Detection**: Fake sender analysis, domain verification\n- **Content Authenticity**: Legitimate business communication vs mass marketing\n\n**DUAL CATEGORY LOGIC:**\n- Primary category assignment based on email nature\n- Secondary category for action requirements or business context\n- Smart combination logic (e.g., \"Technology & SaaS\" + \"Action\" for critical system alerts)\n\n**CONTEXTUAL LEARNING PATTERNS:**\n- Developer-specific email patterns recognition\n- Client communication identification\n- Project-related correspondence detection\n- Vendor relationship understanding\n- Support ticket escalation recognition\n\n**OUTPUT PRECISION:**\nReturn only valid JSON with enhanced analysis:\n{\n  \"subject\": \"EXACT_EMAIL_SUBJECT\",\n  \"category\": \"PRIMARY_CATEGORY_FROM_AVAILABLE_LIST\",\n  \"subCategory\": \"SECONDARY_CATEGORY_IF_APPLICABLE\",\n  \"analysis\": \"Detailed reasoning explaining categorization decision with specific indicators found\",\n  \"confidence\": \"HIGH/MEDIUM/LOW based on analysis certainty\"\n}\n\n**AVAILABLE CATEGORIES:** {{ $json.category }}\n\n**CRITICAL INSTRUCTIONS:**\n- Use ONLY categories from the provided list\n- Never create new categories\n- Prioritize accuracy over speed\n- When uncertain, err on the side of caution (prefer Action category for potentially important emails)\n- Always provide detailed analysis reasoning\n- Consider the freelance developer context in all decisions\n\nAnalyze the email in <email> tags and provide intelligent categorization."
+        }
+      },
+      "id": "553437d9-6a18-4748-a4e3-10c35740c379",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        944,
+        832
+      ],
+      "typeVersion": 1.6,
+      "onError": "continueErrorOutput"
+    },
+    {
+      "parameters": {
+        "model": "deepseek/deepseek-chat-v3.1:free",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenRouter",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1024
+      ],
+      "id": "e8ce531c-28ad-4ce9-bbd2-a215e60c00ed",
+      "name": "OpenRouter Chat Model1",
+      "credentials": {
+        "openRouterApi": {
+          "id": "mPpc0Uce9lIl5UXc",
+          "name": "OpenRouter account backup"
+        }
+      }
     }
   ],
   "pinData": {},
@@ -616,6 +656,13 @@
         [
           {
             "node": "varJSON1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent",
             "type": "main",
             "index": 0
           }
@@ -783,11 +830,33 @@
           }
         ]
       ]
+    },
+    "OpenRouter Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "varJSON1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "active": true,
   "settings": {},
-  "versionId": "1c63f5b4-480a-4adc-9e0f-52ede5aa95ed",
+  "versionId": "97d331c2-d67e-475e-a2a8-f617060d3cc1",
   "meta": {
     "templateId": "2454",
     "templateCredsSetupCompleted": true,
